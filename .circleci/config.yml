@@ -9,10 +9,10 @@ jobs:
       - setup_remote_docker
       - run:
           name: "Build image"
-          command: docker build -t blog .
+          command: docker build -t cloud-run-circleci-next .
       - run:
           name: "Tag image"
-          command: docker tag blog eu.gcr.io/$GOOGLE_PROJECT_ID/cloud-run-circleci-next
+          command: docker tag cloud-run-circleci-next eu.gcr.io/$GOOGLE_PROJECT_ID/cloud-run-circleci-next
       - run:
           name: "Auth to gcloud for gcr"
           command: echo $GCLOUD_SERVICE_KEY > auth.json & gcloud auth activate-service-account $GCLOUD_ACOUNT_EMAIL --key-file=auth.json & gcloud auth configure-docker
