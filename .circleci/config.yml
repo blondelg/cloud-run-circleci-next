@@ -12,7 +12,7 @@ jobs:
           command: docker build -t blog .
       - run:
           name: "Tag image"
-          command: docker tag blog eu.gcr.io/$GOOGLE_PROJECT_ID/blog
+          command: docker tag blog eu.gcr.io/$GOOGLE_PROJECT_ID/cloud-run-circleci-next
       - run:
           name: "Auth to gcloud for gcr"
           command: echo $GCLOUD_SERVICE_KEY > auth.json & gcloud auth activate-service-account $GCLOUD_ACOUNT_EMAIL --key-file=auth.json & gcloud auth configure-docker
@@ -21,13 +21,13 @@ jobs:
           command: cat auth.json | docker login -u _json_key --password-stdin https://eu.gcr.io
       - run:
           name: "Push image"
-          command: docker push eu.gcr.io/$GOOGLE_PROJECT_ID/blog
+          command: docker push eu.gcr.io/$GOOGLE_PROJECT_ID/cloud-run-circleci-next
       - run:
           name: "Auth to gcloud for compute"
           command: echo $GCLOUD_COMPUTE_SERVICE_KEY > auth.json & gcloud auth activate-service-account --key-file=auth.json
       - run:
           name: "Deploy image"
-          command: gcloud run deploy blog --project $GOOGLE_PROJECT_ID --image eu.gcr.io/$GOOGLE_PROJECT_ID/blog:latest  --region europe-west9 
+          command: gcloud run deploy cloud-run-circleci-next --project $GOOGLE_PROJECT_ID --image eu.gcr.io/$GOOGLE_PROJECT_ID/cloud-run-circleci-next:latest --region europe-west9 
       - run:
           name: "Flush images"
           command: ./flush-images.sh
@@ -41,4 +41,4 @@ workflows:
               only:
                 - master
           context:
-            - blog
+            - cloud-run-circleci-next 
